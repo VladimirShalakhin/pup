@@ -1,0 +1,37 @@
+services:
+  main:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Сборка с установленным NGINX
+        - NGINX_INSTALL=1
+        # Сборка с установленным XDebug & PHP-Cs-Fixer
+        - DEBUG=1
+        # Путь к папке с исходниками в контейнере
+        - APP_DIR=/app
+        # Путь к папке с исходниками в контейнере для NGINX (Полезно для Laravel, etc. т.к там необходимо указывать путь до директории public)
+        - NGINX_PHP_PATH=/app
+    environment:
+      - NGINX_PHP_PATH=/app/public # Так же этот параметр можно настроить в environment или env_file (compose)
+    ports:
+      # Порт для NGINX
+      - 3008:80
+      # Порт для PHP (Если нужен только PHP-FPM)
+      # - 3009:9000
+    volumes:
+      - ./src:/app # Если нужно монтировать исходники в контейнер (напр для разработки)
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  # PgSQL контейнер
+  db:
+    image: postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: api
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
