@@ -8,7 +8,6 @@ setup: ## setup project
 	make configuration
 	docker compose exec main sh -c "php artisan key:generate"
 	sleep 5 && make migrate
-	make swagger
 
 migrate: ## migrate & seed
 	docker compose exec main sh -c "php artisan migrate:fresh"
