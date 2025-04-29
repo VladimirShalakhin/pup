@@ -2,12 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\RegisterUserRequest;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    public function register(RegisterUserRequest $request): JsonResponse
     {
-        return true;
+        $user = User::create([
+            'name' => $request->safe()->input('name'),
+            'email' => $request->safe()->input('email'),
+            'password' => $request->safe()->input('password'),
+        ]);
+        return response()->json([
+            'name' => $user->name,
+            'email' => $user->email,
+        ]);
     }
 }
