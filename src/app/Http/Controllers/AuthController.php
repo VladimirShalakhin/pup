@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\RegisterUserRequest;
+use App\Http\Requests\User\RegisterUserRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
